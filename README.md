@@ -119,3 +119,23 @@ ________________________________________________________________________________
 **NOTE:** If you have received a built Bento Macropad from me, it will be flashed with this layout by default: 
 
 ![Layout](https://i.imgur.com/exSeW4t.png)
+
+---
+
+## Flashing Help
+
+Clone in to /c/Projects/qmk_firmware/keyboard/bento
+
+Install and run [QMK_MSYS](https://github.com/qmk/qmk_distro_msys)
+
+```
+cd /c/Projects/qmk_firmware
+
+qmk compile --keyboard bento --keymap default
+
+qmk flash --keyboard bento --keymap default
+```
+
+During `flash` push reset button when prompted.
+
+---

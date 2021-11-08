@@ -18,25 +18,35 @@
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     /*
         |                  |          | Knob 2: Vol Up/Dn |
-        |  Toggle Layer 1  |    Up    |    Press: Mute    |
-        |      Left        |   Down   |      Right        |
-     */
+        |  Toggle Layer 1  |   F13    |      F14          |
+        |      F15         |   F16    |      F17          |
     [0] = LAYOUT(
-        MO(1), KC_MYCM, KC_MUTE,
-        KC_MPRV , KC_MPLY  , KC_MNXT
+        MO(1), KC_F13, KC_MUTE,
+        KC_F14 , KC_F15  , KC_F16
     ),
+    [0] = LAYOUT(
+        KC_A, KC_B, KC_C,
+        KC_D, KC_E, KC_F
+    ),
+     */
+
+    [0] = LAYOUT(
+        KC_F13, KC_F14, KC_MUTE,
+        KC_F15 , KC_F16  , KC_F17
+    ),
+
     /*
         |               |   Increase Brightness  |     Mute   |
         |    RGB Cycle  |   Decrease Brightness  |  Hue Cycle |
-     */
     [1] = LAYOUT(
         _______  , RGB_VAI, KC_MUTE,
         RGB_MOD, RGB_VAD, RGB_HUI
     ),
+     */
 
 };
 
-void encoder_update_user(uint8_t index, bool clockwise) {
+bool encoder_update_user(uint8_t index, bool clockwise) {
     if (index == 0) {
         if (clockwise) {
             tap_code(KC_VOLU);
@@ -51,4 +61,23 @@ void encoder_update_user(uint8_t index, bool clockwise) {
             tap_code(KC_PGDN);
         }
     }
+    return true;
+}
+
+void keyboard_pre_init_user(void) {
+    // Light up the red LEDs on the pro micro
+    writePinLow(B0);
+    writePinLow(D5);
+}
+
+void suspend_power_down_user(void) {
+    // code will run multiple times while keyboard is suspended
+    writePinHigh(B0);
+    writePinHigh(D5);
+}
+
+void suspend_wakeup_init_user(void) {
+    // code will run on keyboard wakeup
+    writePinLow(B0);
+    writePinLow(D5);
 }
