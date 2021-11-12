@@ -15,30 +15,43 @@
  */
 #include QMK_KEYBOARD_H
 
+#define _BL 0
+#define _FL 1
+
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     /*
-        |                  |          | Knob 2: Vol Up/Dn |
-        |  Toggle Layer 1  |   F13    |      F14          |
-        |      F15         |   F16    |      F17          |
-    [0] = LAYOUT(
-        MO(1), KC_F13, KC_MUTE,
-        KC_F14 , KC_F15  , KC_F16
+
+    // Example layer with momentary layer toggle MO(_FL)
+    [_BL] = LAYOUT(
+        MO(_FL) , KC_F13 , KC_MUTE,
+        KC_F14  , KC_F15 , KC_F16
     ),
-    [0] = LAYOUT(
+
+    // Layout for testing switches
+    [_BL] = LAYOUT(
         KC_A, KC_B, KC_C,
         KC_D, KC_E, KC_F
     ),
+
      */
 
-    [0] = LAYOUT(
-        KC_F13, KC_F14, KC_MUTE,
-        KC_F15 , KC_F16  , KC_F17
+    /*
+    https://beta.docs.qmk.fm/using-qmk/simple-keycodes/keycodes
+
+        |                  |              |  Knob : Vol Up/Dn  |
+        |       F13        |      F14     |      Mute          |
+        |  Previous Track  |  Next Track  |    Play/Pause      |
+
+    */
+    [_BL] = LAYOUT(
+        KC_F13  , KC_F14   , KC_MUTE,
+        KC_MPRV , KC_MNXT  , KC_MPLY
     ),
 
     /*
         |               |   Increase Brightness  |     Mute   |
         |    RGB Cycle  |   Decrease Brightness  |  Hue Cycle |
-    [1] = LAYOUT(
+    [_FL] = LAYOUT(
         _______  , RGB_VAI, KC_MUTE,
         RGB_MOD, RGB_VAD, RGB_HUI
     ),
@@ -64,10 +77,17 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
     return true;
 }
 
-void keyboard_pre_init_user(void) {
+void keyboard_post_init_user(void) {
     // Light up the red LEDs on the pro micro
     writePinLow(B0);
     writePinLow(D5);
+}
+
+uint32_t default_layer_state_set_rgb(uint32_t state) {
+    // Light up the red LEDs on the pro micro
+    writePinLow(B0);
+    writePinLow(D5);
+    return state;
 }
 
 void suspend_power_down_user(void) {
