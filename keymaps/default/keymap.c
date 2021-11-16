@@ -18,6 +18,11 @@
 #define _BL 0
 #define _FL 1
 
+enum custom_keycodes {
+    KIWI,
+    FIRE
+};
+
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     /*
 
@@ -39,23 +44,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     https://beta.docs.qmk.fm/using-qmk/simple-keycodes/keycodes
 
         |                  |              |  Knob : Vol Up/Dn  |
-        |       F13        |      F14     |      Mute          |
+        |      kiwi        |     fire     |      Mute          |
         |  Previous Track  |  Next Track  |    Play/Pause      |
 
     */
     [_BL] = LAYOUT(
-        KC_F13  , KC_F14   , KC_MUTE,
-        KC_MPRV , KC_MNXT  , KC_MPLY
+        KIWI, FIRE, KC_MUTE,
+        KC_MPRV   , KC_MNXT   , KC_MPLY
     ),
-
-    /*
-        |               |   Increase Brightness  |     Mute   |
-        |    RGB Cycle  |   Decrease Brightness  |  Hue Cycle |
-    [_FL] = LAYOUT(
-        _______  , RGB_VAI, KC_MUTE,
-        RGB_MOD, RGB_VAD, RGB_HUI
-    ),
-     */
 
 };
 
@@ -77,27 +73,20 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
     return true;
 }
 
-void keyboard_post_init_user(void) {
-    // Light up the red LEDs on the pro micro
-    writePinLow(B0);
-    writePinLow(D5);
-}
-
-uint32_t default_layer_state_set_rgb(uint32_t state) {
-    // Light up the red LEDs on the pro micro
-    writePinLow(B0);
-    writePinLow(D5);
-    return state;
-}
-
-void suspend_power_down_user(void) {
-    // code will run multiple times while keyboard is suspended
-    writePinHigh(B0);
-    writePinHigh(D5);
-}
-
-void suspend_wakeup_init_user(void) {
-    // code will run on keyboard wakeup
-    writePinLow(B0);
-    writePinLow(D5);
-}
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case KIWI:
+            if (record->event.pressed) {
+                SEND_STRING(":kiwi:");
+            } else {
+            }
+            break;
+        case FIRE:
+            if (record->event.pressed) {
+                SEND_STRING(":fire:");
+            } else {
+            }
+            break;
+        }
+    return true;
+};
