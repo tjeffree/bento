@@ -35,12 +35,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     { D7, B1, B3 } \
 }
 
-/* Handwired Pin Layout:
-
-    { D7, B1, D2 }, \
-    { E6, B4, B2 } \
-*/
-
 #define ENCODERS_PAD_A {D1}
 #define ENCODERS_PAD_B {F5}
 

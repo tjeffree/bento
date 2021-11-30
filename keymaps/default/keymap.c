@@ -15,8 +15,7 @@
  */
 #include QMK_KEYBOARD_H
 
-#define _BL 0
-#define _FL 1
+#define _BL 0 // Base Layer
 
 enum custom_keycodes {
     KIWI,
@@ -24,30 +23,16 @@ enum custom_keycodes {
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-    /*
-
-    // Example layer with momentary layer toggle MO(_FL)
-    [_BL] = LAYOUT(
-        MO(_FL) , KC_F13 , KC_MUTE,
-        KC_F14  , KC_F15 , KC_F16
-    ),
-
-    // Layout for testing switches
-    [_BL] = LAYOUT(
-        KC_A, KC_B, KC_C,
-        KC_D, KC_E, KC_F
-    ),
-
-     */
 
     /*
     https://beta.docs.qmk.fm/using-qmk/simple-keycodes/keycodes
 
         |                  |              |  Knob : Vol Up/Dn  |
-        |      kiwi        |     fire     |      Mute          |
+        |     :kiwi:       |    :fire:    |      Mute          |
         |  Previous Track  |  Next Track  |    Play/Pause      |
 
     */
+
     [_BL] = LAYOUT(
         KIWI, FIRE, KC_MUTE,
         KC_MPRV   , KC_MNXT   , KC_MPLY
@@ -56,19 +41,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 
 bool encoder_update_user(uint8_t index, bool clockwise) {
-    if (index == 0) {
-        if (clockwise) {
-            tap_code(KC_VOLU);
-        } else {
-            tap_code(KC_VOLD);
-        }
-    }
-    else if (index == 1) {
-        if (clockwise) {
-            tap_code(KC_PGUP);
-        } else {
-            tap_code(KC_PGDN);
-        }
+    if (clockwise) {
+        tap_code(KC_VOLU);
+    } else {
+        tap_code(KC_VOLD);
     }
     return true;
 }
